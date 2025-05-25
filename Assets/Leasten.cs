@@ -1,19 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Leasten : MonoBehaviour
 {
-    public float[] timingList;
+    public float[] noteTiming;
+    public (float start,float end)[] longNoteTiming;
+    public (float start,float end)[] spinnerTiming;
     public AudioSource audio;
     public AudioSource click;
     private float dspSongTime;
     private float songPosition;
     private float songLength;
     private string listJson;
-    private int index;
+    private int[] index = new int[3];
 
-    void Start()
+    private void Start()
     {
         listJson = Data.JsonSong;
         LoadFromJson();
@@ -22,27 +23,48 @@ public class Leasten : MonoBehaviour
         audio.Play();
     }
 
-    void Update()
+    private void Update()
     {
         songPosition = (float)(AudioSettings.dspTime - dspSongTime);
-        if (index<timingList.Length && songPosition>timingList[index])
+        if (index[0]<noteTiming.Length && songPosition>noteTiming[index[0]])
         {
             click.Play();
-            Debug.Log(timingList[index]);
-            index++;
+            index[0]++;
         }
-
+        
+        if (index[1]<longNoteTiming.Length && songPosition>longNoteTiming[index[1]].start)
+        {
+            click.Play();
+            index[1]++;
+        }
+        
+        if (index[2]<noteTiming.Length && songPosition>spinnerTiming[index[2]].start)
+        {
+            click.Play();
+            index[2]++;
+        }
+        
         if (songPosition > songLength || !audio.isPlaying)
         {
             Debug.Log(listJson);
         }
     }
 
-
     private void LoadFromJson()
     {
-        timingList = JsonUtility.FromJson<Class<float>>(listJson).Item;
-        foreach (var item in timingList)
-            Debug.Log(item);
+        var timing = JsonUtility.FromJson<Class<float>>(listJson);
+        noteTiming = timing.Note;
+        longNoteTiming = ParsingTiming(timing.LongNote);
+        spinnerTiming = ParsingTiming(timing.Spinner);
+    }
+
+    private (float, float)[] ParsingTiming(string[] timings)
+    {
+        return timings.Select(x =>
+        {
+            var a = x.Split()
+                .Select(float.Parse);
+            return (a.ElementAt(0), a.ElementAt(1));
+        }).ToArray();
     }
 }
