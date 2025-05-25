@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99d6b496399c7474dac869c7661707cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timingList: []
+  noteTiming: []
   audio: {fileID: 862319738}
   click: {fileID: 862319737}
 --- !u!82 &862319737
@@ -633,10 +633,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3140761ae6520d41a9dade0da58b871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timingList: []
+  noteTiming: []
+  longNoteTiming: []
+  spinnerTiming: []
   audio: {fileID: 1535201372}
   click: {fileID: 1535201371}
-  Listen: {fileID: 862319735}
+  listen: {fileID: 862319735}
 --- !u!4 &1535201370
 Transform:
   m_ObjectHideFlags: 0
