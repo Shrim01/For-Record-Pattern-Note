@@ -65,7 +65,7 @@ public class Recording : MonoBehaviour
 
 
         if (Input.GetKeyDown(key.spinner))
-            longNote.start = songPosition;
+            spinner.start = songPosition;
 
         if (Input.GetKeyUp(key.spinner))
         {
